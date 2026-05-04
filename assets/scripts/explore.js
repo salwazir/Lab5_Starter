@@ -41,9 +41,14 @@ function init() {
     }
 
     utterance.addEventListener('start', () => { faceImage.src = FACE_OPEN; });
-    utterance.addEventListener('end',   () => { faceImage.src = FACE_CLOSED; });
+    utterance.addEventListener('end',   () => {
+      // only close the mouth once nothing else is queued/speaking
+      if (!synth.speaking && !synth.pending) faceImage.src = FACE_CLOSED;
+    });
     utterance.addEventListener('error', () => { faceImage.src = FACE_CLOSED; });
 
+    // repeated clicks should restart, not queue
+    synth.cancel();
     synth.speak(utterance);
   });
 }

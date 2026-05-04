@@ -25,6 +25,14 @@ function init() {
 
   const jsConfetti = new JSConfetti();
 
+  // sync audio volume + icon to the slider's initial value so the first play
+  // honors the displayed volume even before the user touches the slider
+  const startVolume = Number(volumeSlider.value);
+  audio.volume = startVolume / 100;
+  const startIcon = volumeIconFor(startVolume);
+  volumeIcon.src = startIcon.src;
+  volumeIcon.alt = startIcon.alt;
+
   hornSelect.addEventListener('change', () => {
     const horn = HORNS[hornSelect.value];
     if (!horn) return;
